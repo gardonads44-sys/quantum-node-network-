@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en" class=""><head><script>window.livecodes = window.livecodes || {};</script><title>Untitled Project</title><meta name="title" content="Untitled Project"><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><style id="__livecodes_styles__"></style><script src="https://cdn.jsdelivr.net/npm/brython@3.12.4/brython.min.js"></script><script src="https://cdn.jsdelivr.net/npm/brython@3.12.4/brython_stdlib.js"></script><script src="https://cdn.jsdelivr.net/npm/es-module-shims@1.10.0/dist/es-module-shims.js" async=""></script><script type="importmap">{
+  "imports": {}
+}</script></head><body>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazarus Mesh v5.0 - HyperGraph Quantum Network</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ff88;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .quantum-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20px 20px, rgba(0,255,136,0.1) 1px, transparent 0),
+                radial-gradient(circle at 80px 80px, rgba(0,255,136,0.05) 1px, transparent 0);
+            background-size: 100px 100px;
+            z-index: -1;
+            animation: grid-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes grid-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0,255,136,0.5);
+            margin-bottom: 0.5rem;
+        }
+        
+        .version {
+            font-size: 1rem;
+            color: #888;
+            font-weight: 300;
+        }
+        
+        .quantum-node {
+            background: rgba(0,0,0,0.7);
+            border: 2px solid rgba(0,255,136,0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .quantum-node:hover {
+            border-color: rgba(0,255,136,0.6);
+            box-shadow: 0 0 30px rgba(0,255,136,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .node-id {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-disconnected { background: #ff4444; box-shadow: 0 0 10px #ff4444; }
+        .status-connected { background: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+        .status-hypergraph { background: #00ff88; box-shadow: 0 0 15px #00ff88; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(135deg, rgba(0,255,136,0.1) 0%, rgba(0,255,136,0.2) 100%);
+            border: 1px solid rgba(0,255,136,0.4);
+            color: #00ff88;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, rgba(0,255,136,0.2) 0%, rgba(0,255,136,0.3) 100%);
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0,255,136,0.3);
+            transform: translateY(-1px);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .measurement-result {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .entanglement-visualization {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .quantum-particle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,255,136,0.8) 0%, rgba(0,255,136,0.3) 70%, transparent 100%);
+            position: absolute;
+            animation: quantum-float 3s ease-in-out infinite;
+            border: 2px solid rgba(0,255,136,0.5);
+        }
+        
+        .quantum-particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .quantum-particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .quantum-particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .quantum-particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        
+        @keyframes quantum-float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+        
+        .entanglement-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.6) 50%, transparent 100%);
+            animation: entanglement-pulse 2s ease-in-out infinite;
+        }
+        
+        .entanglement-line:nth-child(5) { left: 25%; top: 50%; width: 20%; }
+        .entanglement-line:nth-child(6) { left: 45%; top: 50%; width: 20%; }
+        .entanglement-line:nth-child(7) { left: 65%; top: 50%; width: 20%; }
+        
+        @keyframes entanglement-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .voice-nexus {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid rgba(0,255,136,0.4);
+            border-radius: 15px;
+            padding: 1.5rem;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .voice-nexus h3 {
+            font-family: 'Orbitron', monospace;
+            color: #00ff88;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .voice-message {
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0,255,136,0.05);
+            border-radius: 5px;
+            border-left: 3px solid rgba(0,255,136,0.3);
+        }
+        
+        .voice-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .voice-controls button {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .metric-card {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(0,255,136,0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cluster-info {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .cluster-nodes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .cluster-node {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .controls { flex-direction: column; }
+            .voice-nexus { 
+                position: relative; 
+                bottom: auto; 
+                right: auto; 
+                margin-top: 2rem; 
+                max-width: 100%; 
+            }
+        }
+    </style>
+
+
+    <div class="quantum-grid"></div>
+    
+    <div class="container">
+        <header>
+            <h1>LAZARUS MESH</h1>
+            <div class="version">v5.0 HyperGraph Generalization</div>
+        </header>
+        
+        <div class="quantum-node" id="quantum-node">
+            <div class="node-id">
+                <span class="status-indicator status-disconnected" id="status-indicator"></span>
+                <span id="node-id-display">Node ID: --</span>
+            </div>
+            
+            <div class="entanglement-visualization" id="entanglement-viz" style="display: none;">
+                <div class="quantum-particle"></div>
+                <div class="quantum-particle"></div>
+                <div class="quantum-particle"></div>
+                <div class="quantum-particle"></div>
+                <div class="entanglement-line"></div>
+                <div class="entanglement-line"></div>
+                <div class="entanglement-line"></div>
+            </div>
+            
+            <div class="metrics" id="metrics-panel" style="display: none;">
+                <div class="metric-card">
+                    <div class="metric-value" id="cluster-size">0</div>
+                    <div class="metric-label">Cluster Size</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="purity">1.0</div>
+                    <div class="metric-label">State Purity</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="topology">--</div>
+                    <div class="metric-label">Topology</div>
+                </div>
+            </div>
+            
+            <div class="cluster-info" id="cluster-info" style="display: none;">
+                <h4>HyperGraph Cluster</h4>
+                <div class="cluster-nodes" id="cluster-nodes"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="connect-btn" onclick="connectToNetwork()">Connect to Quantum Network</button>
+                <button id="measure-btn" onclick="performMeasurement()" disabled="">Perform Quantum Measurement</button>
+                <button id="disconnect-btn" onclick="disconnectFromNetwork()" disabled="">Disconnect</button>
+            </div>
+            
+            <div class="measurement-result" id="measurement-result" style="display: none;">
+                <strong>Last Measurement:</strong>
+                <div id="measurement-details"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="voice-nexus">
+        <h3>Voice Nexus</h3>
+        <div id="voice-messages"></div>
+        <div class="voice-controls">
+            <button onclick="toggleVoiceNexus()">Toggle Voice</button>
+            <button onclick="clearMessages()">Clear</button>
+        </div>
+    </div>
+    
+    <script>
+        class QuantumNetworkClient {
+            constructor() {
+                this.ws = null;
+                this.isConnected = false;
+                this.inHyperGraph = false;
+                this.voiceEnabled = true;
+                this.clusterNodes = [];
+                this.currentTopology = 'DISCONNECTED';
+            }
+            
+            async connect() {
+                try {
+                    this.ws = new WebSocket('ws://localhost:8765');
+                    
+                    this.ws.onopen = () => {
+                        this.isConnected = true;
+                        this.updateUI();
+                        this.announceNetworkEvent('CONNECTED');
+                        this.sendPing();
+                    };
+                    
+                    this.ws.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        this.handleMessage(data);
+                    };
+                    
+                    this.ws.onerror = (error) => {
+                        console.error('WebSocket error:', error);
+                        this.announceNetworkEvent('CONNECTION_ERROR');
+                    };
+                    
+                    this.ws.onclose = () => {
+                        this.isConnected = false;
+                        this.inHyperGraph = false;
+                        this.updateUI();
+                        this.announceNetworkEvent('DISCONNECTED');
+                    };
+                    
+                } catch (error) {
+                    console.error('Failed to connect:', error);
+                    this.announceNetworkEvent('CONNECTION_FAILED');
+                }
+            }
+            
+            handleMessage(data) {
+                console.log('Received:', data);
+                
+                switch(data.type) {
+                    case 'HYPERGRAPH_LOCKED':
+                        this.inHyperGraph = true;
+                        this.clusterNodes = data.node_ids || [];
+                        this.currentTopology = `GHZ-${data.cluster_size || 4}`;
+                        this.updateUI();
+                        this.announceNetworkEvent('HYPERGRAPH_LOCKED', {
+                            size: data.cluster_size || 4
+                        });
+                        this.showEntanglementVisualization();
+                        break;
+                        
+                    case 'CLUSTER_BROKEN':
+                        this.inHyperGraph = false;
+                        this.clusterNodes = [];
+                        this.currentTopology = 'FRAGMENTED';
+                        this.updateUI();
+                        this.announceNetworkEvent('CLUSTER_BROKEN', {
+                            topology: data.topology,
+                            purity: data.purity,
+                            size: data.topology?.match(/\d+/)?.[0] || 'N'
+                        });
+                        this.hideEntanglementVisualization();
+                        this.displayMeasurementResult(data);
+                        break;
+                        
+                    case 'STATUS':
+                        if (data.status === 'WAITING_FOR_PEERS_(1/4)' || 
+                            data.status === 'WAITING_FOR_PEERS_(2/4)' || 
+                            data.status === 'WAITING_FOR_PEERS_(3/4)') {
+                            this.announceNetworkEvent('WAITING');
+                        }
+                        break;
+                        
+                    case 'PONG':
+                        // Keep-alive response
+                        break;
+                }
+            }
+            
+            async performMeasurement() {
+                if (!this.ws || !this.isConnected || !this.inHyperGraph) return;
+                
+                // Simulate quantum measurement outcome (|0⟩ or |1⟩)
+                const outcome = Math.random() < 0.5 ? [1, 0] : [0, 1]; // |0⟩ or |1⟩
+                
+                this.ws.send(JSON.stringify({
+                    type: 'QUANTUM_MEASUREMENT',
+                    outcome: outcome
+                }));
+                
+                this.announceNetworkEvent('MEASUREMENT_PERFORMED');
+            }
+            
+            disconnect() {
+                if (this.ws) {
+                    this.ws.close();
+                    this.ws = null;
+                }
+                this.isConnected = false;
+                this.inHyperGraph = false;
+                this.clusterNodes = [];
+                this.currentTopology = 'DISCONNECTED';
+                this.updateUI();
+                this.hideEntanglementVisualization();
+            }
+            
+            sendPing() {
+                if (this.ws && this.isConnected) {
+                    this.ws.send(JSON.stringify({ type: 'PING' }));
+                    setTimeout(() => this.sendPing(), 30000); // Ping every 30s
+                }
+            }
+            
+            updateUI() {
+                const statusIndicator = document.getElementById('status-indicator');
+                const nodeIdDisplay = document.getElementById('node-id-display');
+                const connectBtn = document.getElementById('connect-btn');
+                const measureBtn = document.getElementById('measure-btn');
+                const disconnectBtn = document.getElementById('disconnect-btn');
+                
+                // Update node ID
+                nodeIdDisplay.textContent = `Node ID: ${this.isConnected ? (this.ws ? this.ws.url.split('/').pop() : 'CONNECTED') : '--'}`;
+                
+                // Update status indicator
+                statusIndicator.className = 'status-indicator ' + 
+                    (this.inHyperGraph ? 'status-hypergraph' : 
+                     (this.isConnected ? 'status-connected' : 'status-disconnected'));
+                
+                // Update buttons
+                connectBtn.disabled = this.isConnected;
+                measureBtn.disabled = !this.isConnected || !this.inHyperGraph;
+                disconnectBtn.disabled = !this.isConnected;
+                
+                // Update metrics
+                document.getElementById('cluster-size').textContent = 
+                    this.inHyperGraph ? (this.clusterNodes.length || 4) : 0;
+                document.getElementById('topology').textContent = this.currentTopology;
+                
+                // Show/hide cluster info
+                const clusterInfo = document.getElementById('cluster-info');
+                const clusterNodes = document.getElementById('cluster-nodes');
+                if (this.inHyperGraph && this.clusterNodes.length > 0) {
+                    clusterInfo.style.display = 'block';
+                    clusterNodes.innerHTML = this.clusterNodes.map(id => 
+                        `<span class="cluster-node">Node ${id.toString().slice(-4)}</span>`
+                    ).join('');
+                } else {
+                    clusterInfo.style.display = 'none';
+                }
+                
+                // Show/hide metrics panel
+                const metricsPanel = document.getElementById('metrics-panel');
+                metricsPanel.style.display = this.isConnected ? 'grid' : 'none';
+            }
+            
+            showEntanglementVisualization() {
+                const viz = document.getElementById('entanglement-viz');
+                viz.style.display = 'flex';
+            }
+            
+            hideEntanglementVisualization() {
+                const viz = document.getElementById('entanglement-viz');
+                viz.style.display = 'none';
+            }
+            
+            displayMeasurementResult(data) {
+                const resultDiv = document.getElementById('measurement-result');
+                const detailsDiv = document.getElementById('measurement-details');
+                
+                detailsDiv.innerHTML = `
+                    <div>Topology: ${data.topology || 'Unknown'}</div>
+                    <div>State Purity: ${(data.purity || 0).toFixed(4)}</div>
+                    <div>Message: ${data.message || 'N/A'}</div>
+                    <div>Timestamp: ${new Date().toISOString()}</div>
+                `;
+                
+                resultDiv.style.display = 'block';
+            }
+        }
+        
+        // Voice Nexus Implementation
+        class VoiceNexus {
+            constructor() {
+                this.synth = window.speechSynthesis;
+                this.voices = [];
+                this.loadVoices();
+                this.enabled = true;
+            }
+            
+            loadVoices() {
+                this.voices = this.synth.getVoices();
+                if (this.voices.length === 0) {
+                    this.synth.addEventListener('voiceschanged', () => {
+                        this.voices = this.synth.getVoices();
+                    });
+                }
+            }
+            
+            speak(text, priority = 'INFO') {
+                if (!this.enabled || !this.synth) return;
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Use a suitable voice
+                const preferredVoice = this.voices.find(voice => 
+                    voice.name.includes('Google') || 
+                    voice.name.includes('Microsoft') ||
+                    voice.name.includes('Alex')
+                ) || this.voices[0];
+                
+                if (preferredVoice) {
+                    utterance.voice = preferredVoice;
+                }
+                
+                // Set speech parameters based on priority
+                switch(priority) {
+                    case 'CRITICAL':
+                        utterance.rate = 0.8;
+                        utterance.pitch = 0.9;
+                        utterance.volume = 1.0;
+                        break;
+                    case 'ALERT':
+                        utterance.rate = 0.9;
+                        utterance.pitch = 1.0;
+                        utterance.volume = 0.9;
+                        break;
+                    case 'INFO':
+                    default:
+                        utterance.rate = 1.0;
+                        utterance.pitch = 1.1;
+                        utterance.volume = 0.7;
+                        break;
+                }
+                
+                this.synth.speak(utterance);
+                this.addMessageToPanel(text, priority);
+            }
+            
+            addMessageToPanel(text, priority) {
+                const messagesDiv = document.getElementById('voice-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'voice-message';
+                messageDiv.innerHTML = `<strong>[${priority}]</strong> ${text}`;
+                
+                messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+                
+                // Keep only last 10 messages
+                while (messagesDiv.children.length > 10) {
+                    messagesDiv.removeChild(messagesDiv.lastChild);
+                }
+            }
+            
+            toggle() {
+                this.enabled = !this.enabled;
+                if (!this.enabled) {
+                    this.synth.cancel();
+                }
+                return this.enabled;
+            }
+        }
+        
+        // Global instances
+        const quantumClient = new QuantumNetworkClient();
+        const voiceNexus = new VoiceNexus();
+        
+        // --- HYPERGRAPH VOCABULARY ---
+        function announceNetworkEvent(type, metadata = {}) {
+            const size = metadata.size || "Multi";
+            
+            switch(type) {
+                case 'HYPERGRAPH_LOCKED':
+                    voiceNexus.speak(`${size}-Node Cluster Established. Hyper-graph State Nominal.`, "CRITICAL");
+                    break;
+                case 'CLUSTER_BROKEN':
+                    voiceNexus.speak(`Topology Fragmented. ${size} minus one nodes remaining in residual state.`, "ALERT");
+                    break;
+                case 'WAITING':
+                    voiceNexus.speak("Scanning for peers...", "INFO");
+                    break;
+                case 'CONNECTED':
+                    voiceNexus.speak("Node connected to quantum network", "INFO");
+                    break;
+                case 'DISCONNECTED':
+                    voiceNexus.speak("Node disconnected from network", "INFO");
+                    break;
+                case 'CONNECTION_ERROR':
+                    voiceNexus.speak("Connection error detected", "ALERT");
+                    break;
+                case 'CONNECTION_FAILED':
+                    voiceNexus.speak("Failed to connect to quantum network", "ALERT");
+                    break;
+                case 'MEASUREMENT_PERFORMED':
+                    voiceNexus.speak("Quantum measurement performed. Wavefunction collapsed.", "INFO");
+                    break;
+            }
+        }
+        
+        // Global functions for HTML buttons
+        function connectToNetwork() {
+            quantumClient.connect();
+        }
+        
+        function performMeasurement() {
+            quantumClient.performMeasurement();
+        }
+        
+        function disconnectFromNetwork() {
+            quantumClient.disconnect();
+        }
+        
+        function toggleVoiceNexus() {
+            const enabled = voiceNexus.toggle();
+            const btn = event.target;
+            btn.textContent = enabled ? 'Mute Voice' : 'Enable Voice';
+        }
+        
+        function clearMessages() {
+            document.getElementById('voice-messages').innerHTML = '';
+        }
+        
+        // Initialize UI
+        document.addEventListener('DOMContentLoaded', () => {
+            quantumClient.updateUI();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'c':
+                            e.preventDefault();
+                            connectToNetwork();
+                            break;
+                        case 'm':
+                            e.preventDefault();
+                            performMeasurement();
+                            break;
+                        case 'd':
+                            e.preventDefault();
+                            disconnectFromNetwork();
+                            break;
+                    }
+                }
+            });
+            
+            console.log('Lazarus Mesh v5.0 initialized. Use Ctrl+C to connect, Ctrl+M to measure, Ctrl+D to disconnect.');
+        });
+    </script>
+
+<script type="text/python">#!/usr/bin/env python3
+"""
+Lazarus Mesh v5.0: HyperGraph Generalization
+Quantum Networking Server with Tensor Contraction Engine
+"""
+
+import asyncio
+import websockets
+import numpy as np
+import json
+import logging
+from collections import defaultdict
+from datetime import datetime
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+class EntanglementNetwork:
+    """Base class for quantum network implementations"""
+    def __init__(self):
+        self.active_connections = set()
+        self.message_history = defaultdict(list)
+        
+    async def register(self, websocket):
+        """Register a new quantum node"""
+        self.active_connections.add(websocket)
+        logger.info(f"Node {id(websocket)} registered. Total nodes: {len(self.active_connections)}")
+        
+    async def unregister(self, websocket):
+        """Unregister a quantum node"""
+        self.active_connections.discard(websocket)
+        logger.info(f"Node {id(websocket)} unregistered. Total nodes: {len(self.active_connections)}")
+
+# --- LAZARUS EXPANSION: GHZ-N HYPERGRAPH ---
+
+class HyperGraphNetwork(EntanglementNetwork):
+    """
+    Generalized N-Party Entanglement Engine.
+    Hilbert Space: (C^2)^⊗N
+    Uses Einstein Summation for arbitrary subsystem tracing.
+    """
+    def __init__(self, cluster_size=3):
+        super().__init__()
+        self.cluster_size = cluster_size
+        self.node_queue = [] 
+        self.clusters = {} # Map: tuple(sorted_ids) -> Density Matrix (2^N x 2^N)
+        self.node_map = {} # Map: ws -> cluster_key
+
+    def _generate_ghz_n(self, n):
+        """Generates |GHZ_N⟩ = (|0...0⟩ + |1...1⟩)/√2"""
+        dim = 2**n
+        psi = np.zeros(dim, dtype=complex)
+        psi[0] = 1.0
+        psi[dim-1] = 1.0
+        psi /= np.sqrt(2)
+        return np.outer(psi, psi.conj())
+
+    async def register_node(self, websocket):
+        self.node_queue.append(websocket)
+        
+        # Check if we have enough nodes to form a HyperGraph
+        if len(self.node_queue) >= self.cluster_size:
+            # Form Cluster
+            nodes = [self.node_queue.pop(0) for _ in range(self.cluster_size)]
+            node_ids = tuple(sorted([id(n) for n in nodes]))
+            
+            # Initialize N-Party Physics
+            rho = self._generate_ghz_n(self.cluster_size)
+            self.clusters[node_ids] = rho
+            
+            # Map nodes to this cluster
+            for node in nodes:
+                self.node_map[node] = node_ids
+            
+            return nodes, "HYPERGRAPH_LOCKED"
+        
+        return None, f"WAITING_FOR_PEERS_({len(self.node_queue)}/{self.cluster_size})"
+
+    async def propagate_collapse(self, sender_ws, local_outcome):
+        """
+        GENERALIZED PARTIAL TRACE via Tensor Reshaping.
+        Collapses Node K, traces it out, and leaves residual state for N-1 nodes.
+        """
+        cluster_key = self.node_map.get(sender_ws)
+        if not cluster_key: return None, None
+        
+        # 1. Retrieve State
+        rho = self.clusters[cluster_key]
+        n_qubits = len(cluster_key)
+        
+        # 2. Identify Target Index
+        # We need the index of the sender in the sorted key
+        sorted_ids = list(cluster_key)
+        target_idx = sorted_ids.index(id(sender_ws))
+        
+        # 3. Construct Measurement Operator P (2x2)
+        vec_A = np.array(local_outcome, dtype=complex)
+        P = np.outer(vec_A, vec_A.conj())
+        
+        # 4. Apply Projection (P on target_idx, I on others)
+        # Dynamic Kronecker Product Construction
+        ops = [np.eye(2, dtype=complex)] * n_qubits
+        ops[target_idx] = P
+        
+        # M = Op[0] ⊗ Op[1] ⊗ ...
+        M = ops[0]
+        for op in ops[1:]:
+            M = np.kron(M, op)
+            
+        rho_prime = M @ rho @ M.conj().T
+        norm = np.trace(rho_prime).real
+        
+        if norm < 1e-9: return None, None # Impossible
+        rho_prime /= norm
+        
+        # 5. Partial Trace and State Update
+        # Calculate Global Purity of the post-collapse state
+        purity = np.trace(rho_prime @ rho_prime).real
+        
+        # Get partner nodes
+        partners = [ws for ws, key in self.node_map.items() if key == cluster_key and ws != sender_ws]
+
+        # Clean up the cluster
+        del self.clusters[cluster_key]
+        for partner in partners:
+            if partner in self.node_map:
+                del self.node_map[partner]
+        if sender_ws in self.node_map:
+            del self.node_map[sender_ws]
+
+        return partners, {
+            "topology": f"GHZ_{n_qubits}_RESIDUAL",
+            "purity": purity,
+            "message": "N-Party Symmetry Broken. Cluster Fragmented."
+        }
+
+# Global network instance - Initialize for 4-Party GHZ
+network_mesh = HyperGraphNetwork(cluster_size=4)
+
+async def handle_quantum_communication(websocket, path):
+    """Handle WebSocket connections for quantum networking"""
+    await network_mesh.register(websocket)
+    
+    try:
+        # Register node and check for cluster formation
+        nodes, status = await network_mesh.register_node(websocket)
+        
+        # Send initial status
+        await websocket.send(json.dumps({
+            "type": "STATUS",
+            "status": status,
+            "timestamp": datetime.now().isoformat()
+        }))
+        
+        # If HyperGraph formed, notify all nodes in the cluster
+        if nodes and status == "HYPERGRAPH_LOCKED":
+            cluster_msg = json.dumps({
+                "type": "HYPERGRAPH_LOCKED",
+                "cluster_size": network_mesh.cluster_size,
+                "node_ids": [id(node) for node in nodes],
+                "timestamp": datetime.now().isoformat()
+            })
+            
+            for node in nodes:
+                await node.send(cluster_msg)
+                
+            logger.info(f"HyperGraph established with {len(nodes)} nodes")
+        
+        # Handle quantum measurements and collapses
+        async for message in websocket:
+            try:
+                data = json.loads(message)
+                
+                if data.get("type") == "QUANTUM_MEASUREMENT":
+                    # Process quantum measurement
+                    local_outcome = data.get("outcome", [1, 0])  # Default to |0⟩
+                    
+                    # Propagate collapse through the HyperGraph
+                    partners, collapse_info = await network_mesh.propagate_collapse(
+                        websocket, local_outcome
+                    )
+                    
+                    if partners and collapse_info:
+                        # Notify remaining nodes about the collapse
+                        collapse_msg = json.dumps({
+                            "type": "CLUSTER_BROKEN",
+                            "topology": collapse_info["topology"],
+                            "purity": collapse_info["purity"],
+                            "message": collapse_info["message"],
+                            "collapsed_node": id(websocket),
+                            "timestamp": datetime.now().isoformat()
+                        })
+                        
+                        for partner in partners:
+                            try:
+                                await partner.send(collapse_msg)
+                            except Exception as e:
+                                logger.error(f"Failed to send collapse message to partner: {e}")
+                        
+                        logger.info(f"Cluster collapsed. {len(partners)} nodes remaining.")
+                
+                elif data.get("type") == "PING":
+                    # Keep-alive ping
+                    await websocket.send(json.dumps({
+                        "type": "PONG",
+                        "timestamp": datetime.now().isoformat()
+                    }))
+                    
+            except json.JSONDecodeError:
+                logger.error("Invalid JSON received")
+            except Exception as e:
+                logger.error(f"Error processing message: {e}")
+                
+    except websockets.exceptions.ConnectionClosed:
+        logger.info(f"Connection closed for node {id(websocket)}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+    finally:
+        await network_mesh.unregister(websocket)
+
+async def main():
+    """Start the quantum networking server"""
+    logger.info("Starting Lazarus Mesh v5.0 HyperGraph Server...")
+    logger.info(f"Cluster size: {network_mesh.cluster_size}")
+    
+    async with websockets.serve(
+        handle_quantum_communication, 
+        "localhost", 
+        8765,
+        ping_interval=30,
+        ping_timeout=10
+    ):
+        logger.info("Server running on ws://localhost:8765")
+        await asyncio.Future()  # Run forever
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Server shutdown requested")
+        print("\nLazarus Mesh v5.0 server stopped.")</script></body></html>
