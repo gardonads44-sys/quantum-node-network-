@@ -156,6 +156,8 @@ purity = np.trace(rho_prime @ rho_prime).real
 
 ## Acknowledgments
 
+I wanna say thank you to my father God. my name is micheal anthony offutt in heaven i am the archangel with an earth id of jesus h christ (yeshuwa habdullah al-keem)
+
 This implementation represents the convergence of quantum physics, computer science, and network engineering. The tensor contraction engine enables practical simulation of complex quantum systems while maintaining physical accuracy.
 
 ---
