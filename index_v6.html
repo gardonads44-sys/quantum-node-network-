@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lazarus Mesh v6.0 - Quantum Coherence Stabilization System</title>
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --panel: #111827;
+            --ink: #e5e7eb;
+            --border: #1f2937;
+            --quantum: #8b5cf6;
+            --entangled: #ec4899;
+            --teleport: #06b6d4;
+            --classical: #10b981;
+            --gold: #fbbf24;
+            --warn: #f59e0b;
+            --error: #ef4444;
+            --success: #22c55e;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--ink); 
+            font-family: 'SF Mono', 'Consolas', monospace; 
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        
+        /* Masthead */
+        .masthead { 
+            display: grid; 
+            grid-template-columns: auto 1fr auto auto; 
+            align-items: center; 
+            gap: 20px;
+            padding: 16px 24px; 
+            border-bottom: 2px solid var(--border); 
+            background: linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(6,182,212,0.08) 100%);
+        }
+        
+        .logo { 
+            font-size: 16px; 
+            font-weight: 700; 
+            letter-spacing: 2px; 
+            color: var(--quantum); 
+            text-transform: uppercase; 
+        }
+        
+        .status-ribbon { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
+        }
+        
+        .status-chip { 
+            padding: 4px 12px; 
+            border: 1px solid var(--border); 
+            border-radius: 14px; 
+            font-size: 9px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            background: var(--panel);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .status-chip.active { 
+            border-color: var(--quantum); 
+            color: var(--quantum); 
+            box-shadow: 0 0 12px rgba(139,92,246,0.4); 
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .deploy-zone { 
+            display: flex; 
+            gap: 10px; 
+        }
+        
+        .btn-primary { 
+            padding: 10px 24px; 
+            border: 2px solid var(--quantum); 
+            border-radius: 8px; 
+            background: linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(139,92,246,0.1) 100%);
+            color: var(--quantum); 
+            cursor: pointer; 
+            font: inherit; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            font-weight: 700;
+            transition: all 0.2s; 
+            position: relative; 
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover { 
+            background: var(--quantum); 
+            color: var(--bg); 
+            box-shadow: 0 0 20px rgba(139,92,246,0.6); 
+            transform: translateY(-2px);
+        }
+        
+        /* Main Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+            gap: 1px;
+            background: var(--border);
+        }
+        
+        /* Quantum Visualization */
+        .quantum-viz {
+            background: var(--bg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .viz-header {
+            margin-bottom: 24px;
+        }
+        
+        .viz-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--quantum);
+            margin-bottom: 8px;
+        }
+        
+        .viz-subtitle {
+            font-size: 12px;
+            color: var(--ink);
+            opacity: 0.7;
+        }
+        
+        /* Quantum Field Visualization */
+        .quantum-field {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(6,182,212,0.1) 0%, transparent 50%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .quantum-particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--quantum);
+            box-shadow: 0 0 10px var(--quantum);
+            animation: quantum-float 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .quantum-particle.entangled {
+            background: var(--entangled);
+            box-shadow: 0 0 15px var(--entangled);
+        }
+        
+        .quantum-particle.measured {
+            background: var(--classical);
+            box-shadow: 0 0 15px var(--classical);
+            animation: none;
+        }
+        
+        @keyframes quantum-float {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                opacity: 0.8; 
+            }
+            50% { 
+                transform: translateY(-10px) scale(1.2); 
+                opacity: 1; 
+            }
+        }
+        
+        .entanglement-bond {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--entangled) 20%, 
+                var(--entangled) 80%, 
+                transparent 100%);
+            opacity: 0.6;
+            animation: bond-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes bond-pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            background: var(--panel);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        
+        .panel-section {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .panel-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--quantum);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Metrics Display */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .metric-card {
+            background: rgba(139,92,246,0.05);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--quantum);
+            margin-bottom: 4px;
+        }
+        
+        .metric-label {
+            font-size: 10px;
+            color: var(--ink);
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+        
+        /* Node List */
+        .node-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .node-item {
+            background: rgba(17,24,39,0.8);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+        
+        .node-item:hover {
+            border-color: var(--quantum);
+            background: rgba(139,92,246,0.1);
+        }
+        
+        .node-id {
+            color: var(--quantum);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .node-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-connected { background: var(--success); }
+        .status-entangled { background: var(--entangled); }
+        .status-measured { background: var(--classical); }
+        .status-disconnected { background: var(--error); }
+        
+        /* Controls */
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: rgba(139,92,246,0.1);
+            color: var(--quantum);
+            font-size: 10px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-small:hover {
+            background: var(--quantum);
+            color: var(--bg);
+            border-color: var(--quantum);
+        }
+        
+        .btn-small:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Coherence Visualization */
+        .coherence-meter {
+            background: rgba(139,92,246,0.1);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        
+        .coherence-bar {
+            height: 20px;
+            background: var(--panel);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .coherence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--error) 0%, var(--warn) 50%, var(--success) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .coherence-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Voice Nexus */
+        .voice-nexus {
+            background: rgba(17,24,39,0.9);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .voice-title {
+            color: var(--quantum);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .voice-message {
+            color: var(--ink);
+            font-size: 11px;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: rgba(139,92,246,0.1);
+            border-left: 2px solid var(--quantum);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        /* Adaptation Log */
+        .adaptation-log {
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 10px;
+            color: var(--ink);
+            opacity: 0.8;
+        }
+        
+        .adaptation-entry {
+            margin-bottom: 6px;
+            padding: 6px;
+            background: rgba(6,182,212,0.1);
+            border-radius: 4px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+            }
+            
+            .control-panel {
+                max-height: 300px;
+            }
+            
+            .voice-nexus {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="masthead">
+        <div class="logo">Lazarus Mesh v6.0</div>
+        <div class="status-ribbon">
+            <div class="status-chip" id="system-status">Initializing</div>
+            <div class="status-chip" id="coherence-status">Coherence: --</div>
+            <div class="status-chip" id="entanglement-status">Entanglement: --</div>
+        </div>
+        <div class="deploy-zone">
+            <button class="btn-primary" onclick="connectToNetwork()">Deploy Node</button>
+            <button class="btn-primary" onclick="startAdaptation()" id="adapt-btn">Auto-Stabilize</button>
+        </div>
+    </div>
+    
+    <div class="main-grid">
+        <div class="quantum-viz">
+            <div class="viz-header">
+                <div class="viz-title">Quantum Field Visualization</div>
+                <div class="viz-subtitle">Symplectic Geometry over F₁₇ • Tensor Contraction Engine</div>
+            </div>
+            
+            <div class="quantum-field" id="quantum-field">
+                <!-- Quantum particles and bonds will be dynamically generated here -->
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <div class="panel-section">
+                <div class="panel-title">Network Metrics</div>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="total-nodes">0</div>
+                        <div class="metric-label">Total Nodes</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="active-bonds">0</div>
+                        <div class="metric-label">Symplectic Bonds</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="cluster-size">0</div>
+                        <div class="metric-label">Cluster Size</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="state-purity">1.0</div>
+                        <div class="metric-label">State Purity</div>
+                    </div>
+                </div>
+                
+                <div class="coherence-meter">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 10px; color: var(--ink);">Global Coherence</span>
+                        <span style="font-size: 10px; color: var(--quantum);" id="coherence-value">0%</span>
+                    </div>
+                    <div class="coherence-bar">
+                        <div class="coherence-fill" id="coherence-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <div class="panel-title">Quantum Nodes</div>
+                <div class="node-list" id="node-list">
+                    <!-- Nodes will be populated here -->
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <div class="panel-title">Quantum Operations</div>
+                <div class="control-group">
+                    <div class="btn-group">
+                        <button class="btn-small" onclick="performMeasurement()" id="measure-btn" disabled>
+                            Measure
+                        </button>
+                        <button class="btn-small" onclick="applySymplecticShear()" id="shear-btn" disabled>
+                            Shear
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-small" onclick="requestMetrics()" id="metrics-btn">
+                            Metrics
+                        </button>
+                        <button class="btn-small" onclick="triggerAdaptation()" id="adapt-trigger-btn" disabled>
+                            Adapt
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <div class="panel-title">Adaptation Log</div>
+                <div class="adaptation-log" id="adaptation-log">
+                    <div class="adaptation-entry">System initialized. Waiting for connections...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="voice-nexus" id="voice-nexus">
+        <div class="voice-title">Voice Nexus</div>
+        <div id="voice-messages">
+            <div class="voice-message">Welcome to Lazarus Mesh v6.0</div>
+            <div class="voice-message">Quantum Coherence Stabilization System</div>
+        </div>
+    </div>
+    
+    <script>
+        class QuantumNetworkClient {
+            constructor() {
+                this.ws = null;
+                this.isConnected = false;
+                this.inHyperGraph = false;
+                this.nodeId = null;
+                this.clusterNodes = [];
+                this.networkMetrics = {};
+                this.voiceEnabled = true;
+                this.adaptationEnabled = false;
+                
+                // Visualization state
+                this.particles = new Map();
+                this.bonds = new Map();
+                this.nextParticleId = 0;
+            }
+            
+            async connect() {
+                try {
+                    this.ws = new WebSocket('ws://localhost:8765');
+                    
+                    this.ws.onopen = () => {
+                        this.isConnected = true;
+                        this.updateUI();
+                        this.announceNetworkEvent('CONNECTED');
+                        this.addToAdaptationLog('Connected to quantum network');
+                    };
+                    
+                    this.ws.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        this.handleMessage(data);
+                    };
+                    
+                    this.ws.onerror = (error) => {
+                        console.error('WebSocket error:', error);
+                        this.announceNetworkEvent('CONNECTION_ERROR');
+                    };
+                    
+                    this.ws.onclose = () => {
+                        this.isConnected = false;
+                        this.inHyperGraph = false;
+                        this.updateUI();
+                        this.announceNetworkEvent('DISCONNECTED');
+                        this.clearVisualization();
+                    };
+                    
+                } catch (error) {
+                    console.error('Failed to connect:', error);
+                    this.announceNetworkEvent('CONNECTION_FAILED');
+                }
+            }
+            
+            handleMessage(data) {
+                console.log('Received:', data);
+                
+                switch(data.type) {
+                    case 'STATUS':
+                        this.nodeId = data.node_id;
+                        this.updateNodeStatus(data.status);
+                        break;
+                        
+                    case 'HYPERGRAPH_LOCKED':
+                        this.inHyperGraph = true;
+                        this.clusterNodes = data.node_ids || [];
+                        this.updateUI();
+                        this.announceNetworkEvent('HYPERGRAPH_LOCKED', {
+                            size: data.cluster_size || 4
+                        });
+                        this.addToAdaptationLog(`HyperGraph cluster formed (${data.cluster_size} nodes)`);
+                        this.initializeVisualization(data.node_ids);
+                        break;
+                        
+                    case 'CLUSTER_BROKEN':
+                        this.inHyperGraph = false;
+                        this.clusterNodes = [];
+                        this.updateUI();
+                        this.announceNetworkEvent('CLUSTER_BROKEN', {
+                            topology: data.topology,
+                            purity: data.purity,
+                            coherence: data.coherence,
+                            size: data.topology?.match(/\d+/)?.[0] || 'N'
+                        });
+                        this.addToAdaptationLog(`Cluster broken: ${data.message}`);
+                        this.updateVisualizationAfterCollapse(data);
+                        break;
+                        
+                    case 'NETWORK_METRICS':
+                        this.networkMetrics = data.metrics;
+                        this.updateMetricsDisplay(data.metrics);
+                        this.updateVisualization(data.metrics);
+                        break;
+                }
+            }
+            
+            async performMeasurement() {
+                if (!this.ws || !this.isConnected || !this.inHyperGraph) return;
+                
+                // Simulate quantum measurement
+                const outcome = Math.random() < 0.5 ? [1, 0] : [0, 1]; // |0⟩ or |1⟩
+                
+                this.ws.send(JSON.stringify({
+                    type: 'QUANTUM_MEASUREMENT',
+                    outcome: outcome
+                }));
+                
+                this.announceNetworkEvent('MEASUREMENT_PERFORMED');
+                this.addToAdaptationLog(`Measurement performed: |${outcome[0]}⟩`);
+            }
+            
+            async requestMetrics() {
+                if (!this.ws || !this.isConnected) return;
+                
+                this.ws.send(JSON.stringify({
+                    type: 'REQUEST_METRICS'
+                }));
+            }
+            
+            updateUI() {
+                const connectBtn = document.getElementById('connect-btn');
+                const measureBtn = document.getElementById('measure-btn');
+                const shearBtn = document.getElementById('shear-btn');
+                const metricsBtn = document.getElementById('metrics-btn');
+                const adaptTriggerBtn = document.getElementById('adapt-trigger-btn');
+                
+                if (connectBtn) connectBtn.disabled = this.isConnected;
+                if (measureBtn) measureBtn.disabled = !this.isConnected || !this.inHyperGraph;
+                if (shearBtn) shearBtn.disabled = !this.isConnected;
+                if (metricsBtn) metricsBtn.disabled = !this.isConnected;
+                if (adaptTriggerBtn) adaptTriggerBtn.disabled = !this.isConnected;
+                
+                // Update system status chips
+                const systemStatus = document.getElementById('system-status');
+                const coherenceStatus = document.getElementById('coherence-status');
+                const entanglementStatus = document.getElementById('entanglement-status');
+                
+                if (systemStatus) {
+                    if (this.isConnected && this.inHyperGraph) {
+                        systemStatus.textContent = 'HyperGraph Active';
+                        systemStatus.className = 'status-chip active';
+                    } else if (this.isConnected) {
+                        systemStatus.textContent = 'Connected';
+                        systemStatus.className = 'status-chip';
+                    } else {
+                        systemStatus.textContent = 'Disconnected';
+                        systemStatus.className = 'status-chip';
+                    }
+                }
+                
+                if (coherenceStatus && this.networkMetrics.global_coherence !== undefined) {
+                    coherenceStatus.textContent = `Coherence: ${(this.networkMetrics.global_coherence * 100).toFixed(1)}%`;
+                }
+                
+                if (entanglementStatus) {
+                    const bondCount = this.networkMetrics.total_bonds || 0;
+                    entanglementStatus.textContent = `Entanglement: ${bondCount}`;
+                }
+            }
+            
+            updateMetricsDisplay(metrics) {
+                document.getElementById('total-nodes').textContent = metrics.total_nodes || 0;
+                document.getElementById('active-bonds').textContent = metrics.total_bonds || 0;
+                document.getElementById('cluster-size').textContent = metrics.cluster_size || 0;
+                document.getElementById('state-purity').textContent = 
+                    metrics.state_purity ? metrics.state_purity.toFixed(3) : '1.0';
+                
+                // Update coherence display
+                const coherence = metrics.global_coherence || 0;
+                document.getElementById('coherence-value').textContent = `${(coherence * 100).toFixed(1)}%`;
+                document.getElementById('coherence-fill').style.width = `${coherence * 100}%`;
+                
+                // Update node list
+                this.updateNodeList(metrics);
+            }
+            
+            updateNodeList(metrics) {
+                const nodeList = document.getElementById('node-list');
+                if (!nodeList) return;
+                
+                nodeList.innerHTML = '';
+                
+                if (metrics.node_list && Array.isArray(metrics.node_list)) {
+                    metrics.node_list.forEach(nodeInfo => {
+                        const nodeItem = document.createElement('div');
+                        nodeItem.className = 'node-item';
+                        
+                        const statusClass = this.getNodeStatusClass(nodeInfo.status);
+                        
+                        nodeItem.innerHTML = `
+                            <div class="node-id">${nodeInfo.id || 'Unknown'}</div>
+                            <div class="node-status">
+                                <span class="status-dot ${statusClass}"></span>
+                                <span>${nodeInfo.status || 'Unknown'}</span>
+                            </div>
+                        `;
+                        
+                        nodeList.appendChild(nodeItem);
+                    });
+                } else {
+                    // Simple placeholder
+                    nodeList.innerHTML = '<div class="node-item"><div class="node-id">No nodes connected</div></div>';
+                }
+            }
+            
+            getNodeStatusClass(status) {
+                switch(status) {
+                    case 'connected': return 'status-connected';
+                    case 'entangled': return 'status-entangled';
+                    case 'measured': return 'status-measured';
+                    default: return 'status-disconnected';
+                }
+            }
+            
+            // Visualization methods
+            initializeVisualization(nodeIds) {
+                const field = document.getElementById('quantum-field');
+                if (!field) return;
+                
+                // Clear existing
+                field.innerHTML = '';
+                this.particles.clear();
+                this.bonds.clear();
+                
+                // Create particles for each node
+                nodeIds.forEach((nodeId, index) => {
+                    this.createParticle(nodeId, index, nodeIds.length);
+                });
+                
+                // Create bonds between entangled nodes
+                this.createEntanglementBonds(nodeIds);
+            }
+            
+            createParticle(nodeId, index, totalNodes) {
+                const field = document.getElementById('quantum-field');
+                if (!field) return;
+                
+                const particle = document.createElement('div');
+                particle.className = 'quantum-particle';
+                particle.id = `particle-${nodeId}`;
+                
+                // Position particles in a circle
+                const angle = (index / totalNodes) * 2 * Math.PI;
+                const radius = 120;
+                const centerX = field.offsetWidth / 2;
+                const centerY = field.offsetHeight / 2;
+                
+                const x = centerX + radius * Math.cos(angle) - 6;
+                const y = centerY + radius * Math.sin(angle) - 6;
+                
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.animationDelay = `${index * 0.5}s`;
+                
+                field.appendChild(particle);
+                this.particles.set(nodeId, { element: particle, x, y });
+            }
+            
+            createEntanglementBonds(nodeIds) {
+                const field = document.getElementById('quantum-field');
+                if (!field) return;
+                
+                // Create bonds between adjacent nodes in cluster
+                for (let i = 0; i < nodeIds.length; i++) {
+                    for (let j = i + 1; j < nodeIds.length; j++) {
+                        this.createBond(nodeIds[i], nodeIds[j]);
+                    }
+                }
+            }
+            
+            createBond(nodeId1, nodeId2) {
+                const field = document.getElementById('quantum-field');
+                if (!field) return;
+                
+                const particle1 = this.particles.get(nodeId1);
+                const particle2 = this.particles.get(nodeId2);
+                
+                if (!particle1 || !particle2) return;
+                
+                const bond = document.createElement('div');
+                bond.className = 'entanglement-bond';
+                
+                const dx = particle2.x - particle1.x;
+                const dy = particle2.y - particle1.y;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                bond.style.left = `${particle1.x + 6}px`;
+                bond.style.top = `${particle1.y + 6}px`;
+                bond.style.width = `${length}px`;
+                bond.style.transform = `rotate(${angle}deg)`;
+                bond.style.transformOrigin = '0 50%';
+                
+                field.appendChild(bond);
+                this.bonds.set(`${nodeId1}-${nodeId2}`, bond);
+            }
+            
+            updateVisualization(metrics) {
+                // Update particle states based on metrics
+                if (metrics.node_states) {
+                    metrics.node_states.forEach(nodeState => {
+                        const particle = this.particles.get(nodeState.id);
+                        if (particle && particle.element) {
+                            particle.element.className = `quantum-particle ${nodeState.state}`;
+                        }
+                    });
+                }
+            }
+            
+            updateVisualizationAfterCollapse(data) {
+                // Visualize collapse effects
+                if (data.collapsed_node) {
+                    const particle = this.particles.get(data.collapsed_node);
+                    if (particle && particle.element) {
+                        particle.element.className = 'quantum-particle measured';
+                    }
+                }
+            }
+            
+            clearVisualization() {
+                const field = document.getElementById('quantum-field');
+                if (field) {
+                    field.innerHTML = '';
+                }
+                this.particles.clear();
+                this.bonds.clear();
+            }
+            
+            // Voice Nexus methods
+            announceNetworkEvent(type, metadata = {}) {
+                const size = metadata.size || "Multi";
+                
+                let message = '';
+                let priority = 'INFO';
+                
+                switch(type) {
+                    case 'HYPERGRAPH_LOCKED':
+                        message = `${size}-Node Cluster Established. HyperGraph State Nominal.`;
+                        priority = 'CRITICAL';
+                        break;
+                    case 'CLUSTER_BROKEN':
+                        message = `Topology Fragmented. ${size} minus one nodes remaining.`;
+                        priority = 'ALERT';
+                        break;
+                    case 'CONNECTED':
+                        message = 'Node connected to quantum network';
+                        break;
+                    case 'DISCONNECTED':
+                        message = 'Node disconnected from network';
+                        break;
+                    case 'CONNECTION_ERROR':
+                        message = 'Connection error detected';
+                        priority = 'ALERT';
+                        break;
+                    case 'CONNECTION_FAILED':
+                        message = 'Failed to connect to quantum network';
+                        priority = 'ALERT';
+                        break;
+                    case 'MEASUREMENT_PERFORMED':
+                        message = 'Quantum measurement performed. Wavefunction collapsed.';
+                        break;
+                }
+                
+                this.addVoiceMessage(message, priority);
+            }
+            
+            addVoiceMessage(text, priority = 'INFO') {
+                const messagesDiv = document.getElementById('voice-messages');
+                if (!messagesDiv) return;
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'voice-message';
+                messageDiv.innerHTML = `<strong>[${priority}]</strong> ${text}`;
+                
+                messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+                
+                // Keep only last 5 messages
+                while (messagesDiv.children.length > 5) {
+                    messagesDiv.removeChild(messagesDiv.lastChild);
+                }
+                
+                // Text-to-speech
+                if (this.voiceEnabled && 'speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = priority === 'CRITICAL' ? 0.8 : 1.0;
+                    utterance.pitch = priority === 'ALERT' ? 1.0 : 1.1;
+                    utterance.volume = priority === 'CRITICAL' ? 1.0 : 0.7;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+            
+            addToAdaptationLog(message) {
+                const logDiv = document.getElementById('adaptation-log');
+                if (!logDiv) return;
+                
+                const entry = document.createElement('div');
+                entry.className = 'adaptation-entry';
+                entry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+                
+                logDiv.insertBefore(entry, logDiv.firstChild);
+                
+                // Keep only last 10 entries
+                while (logDiv.children.length > 10) {
+                    logDiv.removeChild(logDiv.lastChild);
+                }
+            }
+        }
+        
+        // Global client instance
+        const quantumClient = new QuantumNetworkClient();
+        
+        // Global functions
+        function connectToNetwork() {
+            quantumClient.connect();
+        }
+        
+        function performMeasurement() {
+            quantumClient.performMeasurement();
+        }
+        
+        function applySymplecticShear() {
+            // Simulate symplectic shear operation
+            quantumClient.addToAdaptationLog('Applied symplectic shear transformation');
+            quantumClient.addVoiceMessage('Symplectic shear applied to phase space');
+        }
+        
+        function requestMetrics() {
+            quantumClient.requestMetrics();
+        }
+        
+        function startAdaptation() {
+            const btn = document.getElementById('adapt-btn');
+            if (btn) {
+                quantumClient.adaptationEnabled = !quantumClient.adaptationEnabled;
+                btn.textContent = quantumClient.adaptationEnabled ? 'Stop Adapt' : 'Auto-Stabilize';
+                btn.style.background = quantumClient.adaptationEnabled ? 
+                    'linear-gradient(135deg, rgba(34,197,94,0.2) 0%, rgba(34,197,94,0.1) 100%)' : 
+                    'linear-gradient(135deg, rgba(139,92,246,0.2) 0%, rgba(139,92,246,0.1) 100%)';
+                
+                quantumClient.addToAdaptationLog(
+                    `Adaptive stabilization ${quantumClient.adaptationEnabled ? 'enabled' : 'disabled'}`
+                );
+            }
+        }
+        
+        function triggerAdaptation() {
+            quantumClient.addToAdaptationLog('Manual adaptation triggered');
+            quantumClient.addVoiceMessage('Adaptive symplectic homology initiated');
+        }
+        
+        // Initialize UI
+        document.addEventListener('DOMContentLoaded', () => {
+            quantumClient.updateUI();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'c':
+                            e.preventDefault();
+                            connectToNetwork();
+                            break;
+                        case 'm':
+                            e.preventDefault();
+                            performMeasurement();
+                            break;
+                        case 'a':
+                            e.preventDefault();
+                            startAdaptation();
+                            break;
+                    }
+                }
+            });
+            
+            console.log('Lazarus Mesh v6.0 initialized');
+            console.log('Keyboard shortcuts: Ctrl+C (connect), Ctrl+M (measure), Ctrl+A (adapt)');
+        });
+    </script>
+</body>
+</html>
